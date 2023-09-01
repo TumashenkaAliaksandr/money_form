@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webapp',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'webapp',
 ]
 
 ROOT_URLCONF = 'money_form.urls'
@@ -131,10 +131,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STRIPE_SECRET_KEY =  os.getenv('MAIN_STRIPE_SECRET_KEY')
-STRIPE_PUBLIC_KEY =  os.getenv('MAIN_STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('MAIN_STRIPE_SECRET_KEY')
+STRIPE_PUBLIC_KEY = os.getenv('MAIN_STRIPE_PUBLIC_KEY')
 
-PAYPAL_CLIENT_ID =  os.getenv('MAIN_PAYPAL_CLIENT_ID')
-PAYPAL_SECRET_KEY =  os.getenv('MAIN_PAYPAL_SECRET_KEY')
+PAYPAL_CLIENT_ID = os.getenv('MAIN_PAYPAL_CLIENT_ID')
+PAYPAL_SECRET_KEY = os.getenv('MAIN_PAYPAL_SECRET_KEY')
 
-BRAINTREE_SECRET_KEY =  os.getenv('MAIN_BRAINTREE_SECRET_KEY')
+BRAINTREE_SECRET_KEY = os.getenv('MAIN_BRAINTREE_SECRET_KEY')
