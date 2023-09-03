@@ -12,7 +12,7 @@ app_name = 'webapp'
 urlpatterns = [
     path('', index, name='home'),
     path('payment_success/', payment_success, name='payment_success'),
-    path('payment_error/', payment_error(), name='payment_error'),
+    path('payment_error/', payment_error, name='payment_error'),
     ]
 
 if settings.DEBUG:

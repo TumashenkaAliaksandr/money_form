@@ -68,7 +68,7 @@ def index(request):
     else:
         form = PaymentForm()
 
-    return render(request, 'webapp/index.html', {'form': form})
+    return render(request, 'webapp/index.html')
 
 
 def payment_success(request):
