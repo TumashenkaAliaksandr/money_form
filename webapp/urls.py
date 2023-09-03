@@ -1,4 +1,5 @@
 from django.urls import path
+
 from webapp.views import *
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,7 +11,6 @@ app_name = 'webapp'
 
 urlpatterns = [
     path('', index, name='home'),
-
     ]
 
 if settings.DEBUG:
