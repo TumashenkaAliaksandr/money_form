@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Успешный платеж</h1>
+            <p>Платеж успешно обработан.</p>
+            {% if payment %}
+                <h2>Детали платежа:</h2>
+                <p>Владелец: {{ payment.owner }}</p>
+                <p>Номер карты: {{ payment.card_number }}</p>
+                <p>CVV: {{ payment.cvv }}</p>
+                <p>Срок действия: {{ payment.expiration_date_month }}/{{ payment.expiration_date_year }}</p>
+            {% endif %}
+            <!-- Дополнительные детали о платеже или подтверждение могут быть добавлены здесь -->
+        </div>
+    </div>
+</div>
+{% endblock %}

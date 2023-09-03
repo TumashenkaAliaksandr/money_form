@@ -40,3 +40,9 @@ def index(request):
         form = PaymentForm()
 
     return render(request, 'webapp/index.html', {'form': form})
+
+
+def payment_success(request):
+    # Предположим, что у вас есть объект Payment, который вы хотите передать
+    payment = Payment.objects.first()  # Здесь предполагается, что вы получаете платеж из базы данных
+    return render(request, 'webapp/payment_success.html', {'payment': payment})
