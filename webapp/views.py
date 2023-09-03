@@ -1,45 +1,69 @@
+import stripe
 from django.shortcuts import render
-from .forms import PaymentForm  # Импортируйте вашу форму PaymentForm
-from .models import Payment  # Импортируйте модель Payment
+from .forms import PaymentForm
+from .models import Payment
+from stripe.error import StripeError
 
 
-def is_valid_credit_card(card_number):
-    pass
+# Определите собственное исключение для ошибок Stripe
+class StripePaymentError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 
 def index(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            # Обработка данных формы
             owner = form.cleaned_data['owner']
             card_number = form.cleaned_data['card_number']
             cvv = form.cleaned_data['cvv']
             expiration_date_month = form.cleaned_data['expiration_date_month']
             expiration_date_year = form.cleaned_data['expiration_date_year']
 
-            # Ваша логика для обработки платежей и валидации карты
-            # Здесь вы можете использовать платежные шлюзы (например, Stripe, PayPal) или
-            # библиотеки для валидации кредитных карт.
+            try:
+                stripe.api_key = 'YOUR_STRIPE_SECRET_KEY'
+                token = stripe.Token.create(
+                    card={
+                        "number": card_number,
+                        "exp_month": expiration_date_month,
+                        "exp_year": expiration_date_year,
+                        "cvc": cvv,
+                    },
+                )
 
-            # Пример валидации номера кредитной карты (логика может быть более сложной):
-            if not is_valid_credit_card(card_number):
-                return render(request, 'webapp/payment_error.html', {'form': form})
+                charge = stripe.Charge.create(
+                    amount=1000,
+                    currency="usd",
+                    source=token,
+                    description=f"Payment by {owner}",
+                )
 
-            # Создание и сохранение экземпляра модели Payment
-            payment = Payment(
-                owner=owner,
-                card_number=card_number,
-                cvv=cvv,
-                expiration_date_month=expiration_date_month,
-                expiration_date_year=expiration_date_year
-            )
-            payment.save()
+                if charge.status == "succeeded":
+                    payment = Payment(
+                        owner=owner,
+                        card_number=card_number,
+                        cvv=cvv,
+                        expiration_date_month=expiration_date_month,
+                        expiration_date_year=expiration_date_year,
+                    )
+                    payment.save()
+                    return render(request, 'webapp/payment_success.html', {'form': form})
 
-            # После успешного платежа или обработки, вы можете перенаправить пользователя на другую страницу или
-            # отобразить сообщение об успешном платеже.
+                else:
+                    # Создаем собственное исключение для ошибок Stripe и вызываем его
+                    raise StripePaymentError('Платеж не был выполнен. Пожалуйста, попробуйте еще раз.')
 
-            return render(request, 'webapp/payment_success.html', {'form': form})
+            except stripe.error.StripeError as e:
+                # Обработка других ошибок Stripe
+                return render(request, 'webapp/payment_error.html',
+                              {'form': form, 'error_message': f'Ошибка Stripe: {e}'})
+
+            except StripePaymentError as e:
+                # Обработка собственного исключения StripePaymentError
+                return render(request, 'webapp/payment_error.html',
+                              {'form': form, 'error_message': str(e)})
 
     else:
         form = PaymentForm()
