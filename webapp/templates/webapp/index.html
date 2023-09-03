@@ -1,57 +1,74 @@
 {% load static %}
+<!--{% block content %}-->
+
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />-->
+<!--<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">-->
+<!--<link href="https://bootstraptema.ru/snippets/form/2017/styles.css" rel="stylesheet">-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+<!--<script src="https://bootstraptema.ru/snippets/form/2017/jquery.payform.min.js"></script>-->
+<!--<script src="https://bootstraptema.ru/snippets/form/2017/script.js"></script>-->
+
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        <div class="creditCardForm">-->
+<!--            <div class="heading">-->
+<!--                <h1>Credit Card Form Validation</h1>-->
+<!--            </div>-->
+<!--            <div class="payment">-->
+<!--                <form>-->
+<!--                    {% csrf_token %}-->
+<!--                    <div class="form-group owner">-->
+<!--                        <label for="id_owner">Owner</label>-->
+<!--                        <input type="text" class="form-control" id="id_owner" name="owner">-->
+<!--                    </div>-->
+<!--                    <div class="form-group CVV">-->
+<!--                        <label for="id_cvv">CVV</label>-->
+<!--                        <input type="text" class="form-control" id="id_cvv" name="cvv">-->
+<!--                    </div>-->
+<!--                    <div class="form-group" id="card-number-field">-->
+<!--                        <label for="id_cardNumber">Card Number</label>-->
+<!--                        <input type="text" class="form-control" id="id_cardNumber" name="card_number">-->
+<!--                    </div>-->
+<!--                    <div class="form-group" id="expiration-date">-->
+<!--                        <label>Expiration Date</label>-->
+<!--                        <select name="expiration_date_month" id="id_expiration_date_month">-->
+<!--                            <option value="01">January</option>-->
+<!--                            &lt;!&ndash; ... Остальные месяцы ... &ndash;&gt;-->
+<!--                        </select>-->
+<!--                        <select name="expiration_date_year" id="id_expiration_date_year">-->
+<!--                            <option value="16">2016</option>-->
+<!--                            &lt;!&ndash; ... Остальные годы ... &ndash;&gt;-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="form-group" id="credit_cards">-->
+<!--                        <img src="https://bootstraptema.ru/snippets/form/2017/visa.jpg" id="visa">-->
+<!--                        <img src="https://bootstraptema.ru/snippets/form/2017/mastercard.jpg" id="mastercard">-->
+<!--                        <img src="https://bootstraptema.ru/snippets/form/2017/amex.jpg" id="amex">-->
+<!--                    </div>-->
+<!--                    <div class="form-group" id="pay-now">-->
+<!--                        <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--{% endblock %}-->
+
 {% block content %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<link href="https://bootstraptema.ru/snippets/form/2017/styles.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://bootstraptema.ru/snippets/form/2017/jquery.payform.min.js"></script>
-<script src="https://bootstraptema.ru/snippets/form/2017/script.js"></script>
-
 <div class="container">
     <div class="row">
-        <div class="creditCardForm">
-            <div class="heading">
-                <h1>Credit Card Form Validation</h1>
-            </div>
-            <div class="payment">
-                <form>
-                    {% csrf_token %}
-                    <div class="form-group owner">
-                        <label for="id_owner">Owner</label>
-                        <input type="text" class="form-control" id="id_owner" name="owner">
-                    </div>
-                    <div class="form-group CVV">
-                        <label for="id_cvv">CVV</label>
-                        <input type="text" class="form-control" id="id_cvv" name="cvv">
-                    </div>
-                    <div class="form-group" id="card-number-field">
-                        <label for="id_cardNumber">Card Number</label>
-                        <input type="text" class="form-control" id="id_cardNumber" name="card_number">
-                    </div>
-                    <div class="form-group" id="expiration-date">
-                        <label>Expiration Date</label>
-                        <select name="expiration_date_month" id="id_expiration_date_month">
-                            <option value="01">January</option>
-                            <!-- ... Остальные месяцы ... -->
-                        </select>
-                        <select name="expiration_date_year" id="id_expiration_date_year">
-                            <option value="16">2016</option>
-                            <!-- ... Остальные годы ... -->
-                        </select>
-                    </div>
-                    <div class="form-group" id="credit_cards">
-                        <img src="https://bootstraptema.ru/snippets/form/2017/visa.jpg" id="visa">
-                        <img src="https://bootstraptema.ru/snippets/form/2017/mastercard.jpg" id="mastercard">
-                        <img src="https://bootstraptema.ru/snippets/form/2017/amex.jpg" id="amex">
-                    </div>
-                    <div class="form-group" id="pay-now">
-                        <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
-                    </div>
-                </form>
-            </div>
+        <div class="col-md-12">
+            <h1>Payment Form</h1>
+            {% if payment %}
+                <h2>Детали платежа:</h2>
+                <p>Владелец: {{ payment.owner }}</p>
+                <p>Номер карты: {{ payment.card_number }}</p>
+                <p>CVV: {{ payment.cvv }}</p>
+                <p>Срок действия: {{ payment.expiration_date_month }}/{{ payment.expiration_date_year }}</p>
+            {% endif %}
+            <!-- Дополнительные детали о платеже или форма для ввода данных карты могут быть добавлены здесь -->
         </div>
     </div>
 </div>
 {% endblock %}
-
