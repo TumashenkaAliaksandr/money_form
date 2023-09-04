@@ -66,7 +66,7 @@ def index(request):
                               {'form': form, 'error_message': str(e)})
 
     else:
-        form = PaymentForm()
+        PaymentForm()
 
     return render(request, 'webapp/index.html')
 
